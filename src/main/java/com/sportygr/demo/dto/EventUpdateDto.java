@@ -5,7 +5,8 @@ import lombok.Data;
 
 @Data
 @Builder
-public class EventDto {
+public class EventUpdateDto {
     private String eventId;
     private Boolean live;
+    private String currentScore;
 }
