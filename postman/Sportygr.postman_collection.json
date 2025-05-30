@@ -1,0 +1,65 @@
+{
+	"info": {
+		"_postman_id": "3845058a-44d8-484a-99a8-7f4da35ad345",
+		"name": "Sportygr",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1060478"
+	},
+	"item": [
+		{
+			"name": "Scheduler - Create Event",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"eventId\": \"123456\",\n    \"live\": false\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/events/status",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"events",
+						"status"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "MockServer - Get Update Event",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/api/events/123456",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"events",
+						"123456"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

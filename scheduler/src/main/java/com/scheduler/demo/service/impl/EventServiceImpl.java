@@ -18,20 +18,23 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public void registerStatus(EventDto eventDto) {
-        log.info("eventDto: " +eventDto);
+        log.info("Is the event live?[{}]: ", eventDto.getLive());
 
-        JobDetail jobDetail = buildJobDetails(eventDto.getEventId());
-        Trigger trigger = buildTrigger(jobDetail);
+        if(eventDto.getLive()) {
+            log.info("Register schedule for event[{}]: ", eventDto.getEventId());
 
-        try {
-            scheduler.scheduleJob(jobDetail, trigger);
-        } catch (SchedulerException e) {
-            throw new RuntimeException(e);
+            JobDetail jobDetail = buildJobDetails(eventDto.getEventId());
+            Trigger trigger = buildTrigger(jobDetail);
+
+            try {
+                scheduler.scheduleJob(jobDetail, trigger);
+            } catch (SchedulerException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
     private JobDetail buildJobDetails(String eventId){
-        //create map to store key-value (can be received from request) which can be passed to job
         JobDataMap jobDataMap = new JobDataMap();
         jobDataMap.put("eventId", eventId);
 

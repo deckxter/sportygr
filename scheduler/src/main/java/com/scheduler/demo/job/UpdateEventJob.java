@@ -4,30 +4,32 @@ import com.scheduler.demo.dto.EventUpdateDto;
 import com.scheduler.demo.service.KafkaProducerService;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestClient;
 
 @Component
 @Slf4j
 public class UpdateEventJob extends QuartzJobBean {
+    @Value("${myapp.sports.updateserver}")
+    private String updateServerUrl;
+
     @Autowired
     private KafkaProducerService kafkaProducerService;
 
-//    @Autowired
-//    private RecordRepository recordRepository;
-
     @Override
     protected void executeInternal(JobExecutionContext context) {
-        String dataPassed = context.getMergedJobDataMap().get("eventId").toString();
-        System.out.println("eventId : " + dataPassed);
+        String eventId = context.getMergedJobDataMap().get("eventId").toString();
+        log.info("Looking up for information for the event[{}] ", eventId);
 
-        System.out.println("Print Records : ");
-//        recordRepository.findAll().stream().forEach(System.out::println);
-        //Calling REST service to fetch data about the event, and then
-        //Sending this to a kafka topic
+        RestClient restClient = RestClient.builder().build();
+        EventUpdateDto eventUpdateDto = restClient.get()
+                .uri(updateServerUrl, eventId)
+                .retrieve()
+                .body(EventUpdateDto.class);
 
-        kafkaProducerService.send(EventUpdateDto.builder().eventId(dataPassed).currentScore("0:0").build());
+        kafkaProducerService.send(eventUpdateDto);
     }
 }

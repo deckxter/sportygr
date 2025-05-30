@@ -28,13 +28,7 @@ public class KafkaConfig {
         config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class.getName());
         return new DefaultKafkaProducerFactory<>(config);
     }
-//    @Bean
-//    public NewTopic taskTopic() {
-//        return TopicBuilder.name("topic-name")
-//                .partitions(1)
-//                .replicas(1)
-//                .build();
-//    }
+
     @Bean
     public KafkaTemplate<String, EventUpdateDto> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
