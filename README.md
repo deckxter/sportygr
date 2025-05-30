@@ -17,12 +17,13 @@ and get and answer with the current score, and if the event is still in live.
 Method: GET
 url: localhost:8081/api/events/{eventId}
 Output: 
+```json
    {
    "eventId": "123456",
    "live": true,
    "currentScore": "0:0"
    }
-
+```
 
 2. The scheduler, most important component here, also has one endpoint, to register
 the event you want to get updates, so the app is going to create a task and request updates
@@ -31,10 +32,12 @@ from the mockserver every 10 seconds (from the endpoint above), just if the even
 Method: POST
 url: localhost:8080/api/events/status
 Input:
+```json
 {
 "eventId": "123456",
 "live": false
 }
+```
 
 Also, related to kafka we have 2 other components:
 The kafka broker, and the kafka-ui where you can check topics and messages, the url is:
